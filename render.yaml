@@ -1,0 +1,24 @@
+services:
+  # Spring Boot Backend Web Service
+  - type: web
+    name: translator-backend
+    env: docker
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    region: singapore # or oregon / frankfurt
+    plan: free
+    healthCheckPath: /api/history
+
+  # React Frontend Static Site
+  - type: static
+    name: translator-frontend
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: translator-backend
+          property: host
+        transform: https://{host}/api

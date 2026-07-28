@@ -1,0 +1,8 @@
+com\translator\model\TranslationHistory.class
+com\translator\model\TranslationResponse$TranslationResponseBuilder.class
+com\translator\model\TranslationResponse.class
+com\translator\TranslatorApplication.class
+com\translator\controller\TranslationController.class
+com\translator\model\TranslationRequest.class
+com\translator\service\TranslationService.class
+com\translator\repository\TranslationHistoryRepository.class
