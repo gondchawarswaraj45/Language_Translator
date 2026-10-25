@@ -7,7 +7,6 @@ import com.translator.repository.TranslationHistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +19,7 @@ public class TranslationService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @SuppressWarnings("unchecked")
     public TranslationResponse translate(TranslationRequest request) {
         String url = "https://api.mymemory.translated.net/get?q={q}&langpair={langpair}";
         String langPair = request.getSource() + "|" + request.getTarget();
@@ -28,6 +28,9 @@ public class TranslationService {
 
         try {
             Map<String, Object> response = restTemplate.getForObject(url, Map.class, request.getText(), langPair);
+            if (response == null) {
+                throw new RuntimeException("Empty response from translation API");
+            }
             Map<String, Object> responseData = (Map<String, Object>) response.get("responseData");
             String translatedText = responseData.get("translatedText").toString();
             
